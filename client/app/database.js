@@ -111,18 +111,18 @@ if (data === null) {
 }
 
 /**
- * A dumb cloning routing. Serializes a JSON object as a string, then
- * deserializes it.
- */
+* A dumb cloning routing. Serializes a JSON object as a string, then
+* deserializes it.
+*/
 function JSONClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
 /**
- * Emulates reading a "document" from a NoSQL database.
- * Doesn't do any tricky document joins, as we will cover that in the latter
- * half of the course. :)
- */
+* Emulates reading a "document" from a NoSQL database.
+* Doesn't do any tricky document joins, as we will cover that in the latter
+* half of the course. :)
+*/
 export function readDocument(collection, id) {
   // Clone the data. We do this to model a database, where you receive a
   // *copy* of an object and not the object itself.
@@ -138,8 +138,8 @@ export function readDocument(collection, id) {
 }
 
 /**
- * Emulates writing a "document" to a NoSQL database.
- */
+* Emulates writing a "document" to a NoSQL database.
+*/
 export function writeDocument(collection, changedDocument) {
   var id = changedDocument._id;
   if (id === undefined) {
@@ -152,8 +152,8 @@ export function writeDocument(collection, changedDocument) {
 }
 
 /**
- * Adds a new document to the NoSQL database.
- */
+* Adds a new document to the NoSQL database.
+*/
 export function addDocument(collectionName, newDoc) {
   var collection = data[collectionName];
   var nextId = Object.keys(collection).length;
@@ -169,8 +169,8 @@ export function addDocument(collectionName, newDoc) {
 }
 
 /**
- * Deletes a document from an object collection.
- */
+* Deletes a document from an object collection.
+*/
 export function deleteDocument(collectionName, id) {
   var collection = data[collectionName];
   if (!collection[id]) {
@@ -182,31 +182,35 @@ export function deleteDocument(collectionName, id) {
 }
 
 /**
- * Reset our browser-local database.
- */
+* Reset our browser-local database.
+*/
 export function resetDatabase() {
   localStorage.setItem('facebook_data', JSON.stringify(initialData));
   data = JSONClone(initialData);
 }
 
 /**
- * Returns an entire object collection.
- */
+* Returns an entire object collection.
+*/
 export function getCollection(collectionName) {
   return JSONClone(data[collectionName]);
 }
 
 /**
- * Reset database button.
- */
+* Reset database button.
+*/
 export class ResetDatabase extends React.Component {
   render() {
     return (
       <button className="btn btn-default" type="button" onClick={() => {
-        resetDatabase();
-        window.alert("Database reset! Refreshing the page now...");
-        document.location.reload(false);
-      }}>Reset Mock DB</button>
-    );
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', '/resetdb');
+          xhr.addEventListener('load', function() {
+            window.alert("Database reset! Refreshing the page now...");
+            document.location.reload(false);
+          });
+          xhr.send();
+        }}>Reset Mock DB</button>
+      );
+    }
   }
-}
