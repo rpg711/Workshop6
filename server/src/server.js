@@ -1,10 +1,5 @@
-var util = require('./util.js');
-var reverseString = util.reverseString;
-
 // Imports the express Node module.
 var express = require('express');
-var bodyParser = require('body-parser')
-
 
 // Creates an Express server.
 var app = express();
